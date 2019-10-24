@@ -19,6 +19,7 @@ class Banner
 
     /**
      * 新增轮播图接口
+     * @auth('新增轮播图','轮播图管理')
      * @validate('BannerForm') //注解验证器
      * @return \think\response\Json
      */
@@ -30,6 +31,7 @@ class Banner
     }
 
     /**
+     * 删除轮播图
      * @auth('删除轮播图','轮播图管理') //权限控制
      * @param('ids','待删除的轮播图id列表','require|array|min:1') //注解验证器
      * @return \think\response\Json
@@ -52,6 +54,7 @@ class Banner
 
     /**
      * 编辑轮播图基础信息
+     * @auth('编辑轮播图','轮播图管理')
      * @param $id
      * @param('id','轮播图id','require|number')
      * @param('name','轮播图名称','require')
@@ -67,6 +70,7 @@ class Banner
 
     /**
      * 新增轮播图元素
+     * @auth('编辑轮播图','轮播图管理')
      * @validate('BannerItemForm.add')
      */
     public function addBannerItem()
@@ -80,6 +84,7 @@ class Banner
 
     /**
      * 编辑轮播图元素
+     * @auth('编辑轮播图','轮播图管理')
      * @validate('BannerItemForm.edit')
      */
     public function editBannerItem()
@@ -95,6 +100,7 @@ class Banner
 
     /**
      * 删除轮播图元素
+     * @auth('编辑轮播图','轮播图管理')
      * @param('ids','待删除的轮播图元素id列表','require|array|min:1')
      */
     public function delBannerItem()

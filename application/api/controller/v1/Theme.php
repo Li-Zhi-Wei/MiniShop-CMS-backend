@@ -37,6 +37,7 @@ class Theme
 
     /**
      * 新增精选主题
+     * @auth('新增主题','主题管理')
      * @validate('ThemeForm')
      * @throws ThemeException
      */
@@ -55,7 +56,7 @@ class Theme
     }
 
     /**
-     * @auth('删除精选主题','精选主题管理')
+     * @auth('删除主题','主题管理')
      * @param('ids','待删除的主题id数组','require|array|min:1')
      */
     public function delTheme()
@@ -71,6 +72,7 @@ class Theme
 
     /**
      * 更新精选主题信息
+     * @auth('编辑主题','主题管理')
      * @validate('ThemeForm.edit')
      */
     public function updateThemeInfo($id)
@@ -83,6 +85,7 @@ class Theme
     }
     /**
      * 移除精选主题关联商品
+     * @auth('编辑主题','主题管理')
      * @param('id','精选主题id','require|number')
      * @param('products','商品id列表','require|array|min:1')
      */
@@ -96,6 +99,7 @@ class Theme
     }
     /**
      * 新增精选主题关联商品
+     * @auth('编辑主题','主题管理')
      * @param('id','精选主题id','require|number')
      * @param('products','商品id列表','require|array|min:1')
      */

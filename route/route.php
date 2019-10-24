@@ -99,6 +99,17 @@ Route::group('', function () {
             // 新增精选主题关联商品
             Route::post('product/:id','api/v1.Theme/addThemeProduct');
         });
+        // 分类相关接口
+        Route::group('category', function () {
+            // 查询所有分类
+            Route::get('', 'api/v1.Category/getCategory');
+            // 新增分类
+            Route::post('', 'api/v1.Category/addCategory');
+            // 编辑商品分类
+            Route::put(':id', 'api/v1.Category/updateCategory');
+            // 删除分类
+            Route::delete('', 'api/v1.Category/delCategory');
+        });
 
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();
