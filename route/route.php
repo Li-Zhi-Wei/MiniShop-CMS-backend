@@ -110,6 +110,33 @@ Route::group('', function () {
             // 删除分类
             Route::delete('', 'api/v1.Category/delCategory');
         });
+        // 商品管理相关接口
+        Route::group('product', function () {
+            // 分页查询所有商品
+            Route::get('paginate', 'api/v1.Product/getProductsPaginate');
+            // 查询所有可用商品
+            Route::get('', 'api/v1.Product/getProducts');
+            // 商品上架/下架
+            Route::patch(':id','api/v1.Product/modifyStatus');
+            // 新增商品
+            Route::post('','api/v1.Product/addProduct');
+            // 删除商品
+            Route::delete('','api/v1.Product/delProduct');
+            // 更新商品基础信息
+            Route::put('','api/v1.Product/updateProduct');
+            // 新增商品详情图
+            Route::post('image','api/v1.Product/addProductImage');
+            // 编辑商品详情图
+            Route::put('image','api/v1.Product/updateProductImage');
+            // 删除商品详情图
+            Route::delete('image','api/v1.Product/delProductImage');
+            // 新增商品属性
+            Route::post('property','api/v1.Product/addProductProperty');
+            // 编辑商品属性
+            Route::put('property','api/v1.Product/updateProductProperty');
+            // 删除商品属性
+            Route::delete('property','api/v1.Product/delProductProperty');
+        });
 
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();

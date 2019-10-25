@@ -14,7 +14,7 @@ class Theme extends BaseModel
     public function products()
     {
         // 等价于 return $this->belongsToMany('Product', 'theme_product', 'product_id', 'theme_id');
-        return $this->belongsToMany('Product');
+        return $this->belongsToMany('Product')->where('status', '=', 1);
     }
 
     public function topicImg()
