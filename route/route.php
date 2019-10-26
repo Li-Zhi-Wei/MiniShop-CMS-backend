@@ -137,6 +137,12 @@ Route::group('', function () {
             // 删除商品属性
             Route::delete('property','api/v1.Product/delProductProperty');
         });
+        Route::group('order', function () {
+            // 分页查询所有订单
+            Route::get('', 'api/v1.Order/getOrders');
+            // 订单发货
+            Route::post('shipment/:id', 'api/v1.Order/deliverGoods');
+        });
 
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();
