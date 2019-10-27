@@ -142,6 +142,12 @@ Route::group('', function () {
             Route::get('', 'api/v1.Order/getOrders');
             // 订单发货
             Route::post('shipment/:id', 'api/v1.Order/deliverGoods');
+            // 查询订单支付状态
+            Route::get('pay/:orderNo', 'api/v1.Order/getOrderPayStatus');
+            // 订单退款
+            Route::post('pay/refund','api/v1.Order/refund');
+            // 查询退款详情
+            Route::get('pay/refund/:orderNo','api/v1.Order/refundQuery');
         });
 
     });
