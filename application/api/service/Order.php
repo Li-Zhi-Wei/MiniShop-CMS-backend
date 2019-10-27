@@ -8,6 +8,7 @@ use app\api\model\DeliverRecord as DeliverRecordModel;
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\order\OrderException;
 use app\lib\token\Token;
+use Finecho\Logistics\Logistics;
 use think\Db;
 use think\Exception;
 
@@ -57,4 +58,38 @@ class Order
             throw new OrderException(['msg' => '订单发货不成功', 'error_code' => '70009']);
         }
     }
+
+    /**
+     * 查询物流信息
+     */
+    public static function queryLogistics($orderNo)
+    {
+        $deliverRecord = DeliverRecordModel::where('order_no', $orderNo)->find();
+        if (!$deliverRecord) {
+            throw new OrderException(['msg' => '未查询到指定订单号发货单记录', 'error_code' => 70011]);
+        }
+        // 查询缓存中是否有该快递单号的快递信息
+        $cache = cache($deliverRecord->comp . $deliverRecord->number);
+        // 如果有，直接返回缓存中的信息
+        if ($cache) return $cache;
+        // 如果不存在，调用第三方扩展进行快递查询
+        // 获取第三方扩展需要的配置信息
+        $config = config('logistics.config');
+        // 获取快递编码对应公司名称
+        $comp = config('logistics.comp')[$deliverRecord->comp];
+        if($comp=='顺丰'||$comp=='京东'){
+            throw new OrderException(['msg'=>'无法查询顺丰和京东快递','error_code' => 70012]);
+        }
+        // 实例化第三方扩展类并调用query查询方法，第一个参数是快递单号，第二个参数是快递公司名称(可选，但推荐传递)
+        try {
+            $logisticsOrder = (new Logistics($config))->query($deliverRecord->number, $comp);
+            // 查询成功后把查询结果缓存起来，保留1200秒，即20分钟，这个缓存的过期时间可以按自己需要设置
+            cache($deliverRecord->comp . $deliverRecord->number, $logisticsOrder['list'], 1200);
+            // 返回查询结果
+            return $logisticsOrder['list'];
+        } catch (\Finecho\Logistics\Exceptions\Exception $ex) {
+            throw new OrderException(['msg' => $ex->getMessage(), 'error_code' => 70012]);
+        }
+    }
+
 }

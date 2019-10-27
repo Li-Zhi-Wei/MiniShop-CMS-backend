@@ -6,9 +6,11 @@ namespace app\api\model;
 
 use think\Db;
 use think\Exception;
+use think\model\concern\SoftDelete;
 
 class Theme extends BaseModel
 {
+    use SoftDelete;
     protected $hidden = ['topic_img_id', 'head_img_id','delete_time','update_time'];
 
     public function products()

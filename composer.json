@@ -23,7 +23,8 @@
     "lin-cms-tp5/base-core": "dev-master",
     "lin-cms-tp5/admin-core": "dev-master",
     "lin-cms-tp/validate-core": "dev-master",
-    "lin-cms-tp/utils-core": "dev-master"
+    "lin-cms-tp/utils-core": "dev-master",
+    "finecho/logistics": "^3.0"
   },
   "autoload": {
     "psr-4": {

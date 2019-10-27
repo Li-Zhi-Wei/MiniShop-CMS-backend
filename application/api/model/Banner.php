@@ -6,9 +6,11 @@ namespace app\api\model;
 
 use think\Db;
 use think\Exception;
+use think\model\concern\SoftDelete;
 
 class Banner extends BaseModel
 {
+    use SoftDelete;
     public function items()
     {
         // 调用了模型实例的hasMany（）方法，这个方法定义了当前模型与被关联模型BannerItem是一种一对多的关系

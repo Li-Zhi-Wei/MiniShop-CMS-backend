@@ -4,9 +4,11 @@
 namespace app\api\model;
 
 
+use think\model\concern\SoftDelete;
+
 class Product extends BaseModel
 {
-
+    use SoftDelete;
     protected $hidden = ['delete_time', 'create_time', 'update_time', 'from'];
 
     public function category()

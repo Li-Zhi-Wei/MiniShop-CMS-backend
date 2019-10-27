@@ -4,8 +4,11 @@
 namespace app\api\model;
 
 
+use think\model\concern\SoftDelete;
+
 class Order extends BaseModel
 {
+    use SoftDelete;
     protected $hidden = ['delete_time'];
     // 告诉模型这个字段是json格式的数据
     protected $json = ['snap_address', 'snap_items'];

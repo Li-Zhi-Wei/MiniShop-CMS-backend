@@ -148,6 +148,13 @@ Route::group('', function () {
             Route::post('pay/refund','api/v1.Order/refund');
             // 查询退款详情
             Route::get('pay/refund/:orderNo','api/v1.Order/refundQuery');
+            // 查询发货记录
+            Route::get('shipment/record', 'api/v1.Order/getOrderDeliverRecord');
+        });
+        // 物流管理相关接口
+        Route::group('logistics', function () {
+            // 分页查询所有订单
+            Route::get(':orderNo', 'api/v1.Logistics/getLogistics');
         });
 
     });

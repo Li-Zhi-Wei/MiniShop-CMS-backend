@@ -11,6 +11,7 @@ use app\api\model\Order as OrderModel;
 use app\lib\exception\order\OrderException;
 use app\api\service\Order as OrderService;
 use app\api\service\WxPay as WxPayService;
+use app\api\model\DeliverRecord as DeliverRecordModel;
 
 class Order
 {
@@ -81,6 +82,24 @@ class Order
     public function refundQuery($orderNo)
     {
         $result = (new WxPay($orderNo))->refundQuery();
+        return $result;
+    }
+
+    /**
+     * 分页查询订单发货记录
+     * @validate('DeliverRecordForm')
+     */
+    public function getOrderDeliverRecord()
+    {
+        $params = Request::get();
+        $result = DeliverRecordModel::getDeliverRecordPaginate($params);
+        if ($result['total_nums'] === 0) {
+            throw new OrderException([
+                'code' => 404,
+                'msg' => '未查询到相关发货记录',
+                'error_code' => '70010'
+            ]);
+        }
         return $result;
     }
 
