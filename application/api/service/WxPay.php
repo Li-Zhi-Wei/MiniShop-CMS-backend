@@ -2,6 +2,7 @@
 
 
 namespace app\api\service;
+use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\pay\PayException;
 use app\api\model\Order as OrderModel;
 require_once "../extend/wx_pay/WxPay.Api.php";
@@ -79,6 +80,8 @@ class WxPay
         } catch (\WxPayException $ex) {
             throw new PayException(['msg' => $ex->getMessage()]);
         }
+        $order->status = OrderStatusEnum::REFUNDED;
+        $order->save();
         $result = [
             'result_code' => $refundRes['return_code'],
             'out_trade_no' => $refundRes['out_trade_no'],

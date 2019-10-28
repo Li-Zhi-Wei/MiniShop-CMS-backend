@@ -135,3 +135,40 @@ function paginate()
 
     return [$start, $count];
 }
+
+/**
+ * @param $queryStart string 查询条件中的开始时间
+ * @param $queryEnd string 查询条件中的结束时间
+ * @param $format string 日期输出格式
+ * @param $stepType string 日期间距类型
+ * @param int $step int 日期间距
+ * @return array
+ */
+function fill_date_range($queryStart, $queryEnd, $format, $stepType, $extend = '',$step = 1)
+{
+    // 定义个空数组用于接收数组元素
+    $range = [];
+    // 将查询条件格式化为时间戳方便后续使用
+    // 区间开始日期
+    $rangeStart = strtotime($queryStart);
+    // 区间结束日期
+    $rangeEnd = strtotime($queryEnd);
+    // 循环生成数组元素
+    while ($rangeStart <= $rangeEnd) {
+        // 利用PHP内置函数date()按$format参数格式化时间戳
+        $formattedDate = date($format, $rangeStart);
+        // 初始化数据赋值，每个一日期就是一个数组元素
+        $item = [
+            'date' => $formattedDate,
+            'count' => 0,
+        ];
+        // 如果存在扩展字段，给数组追加一个元素
+        if ($extend) $item[$extend] = 0;
+        // 将元素追加到数组中
+        array_push($range, $item);
+        // 利用PHP内置函数strtotime()拿到指向下一个日期的时间戳
+        $rangeStart = strtotime("+{$step} {$stepType}", $rangeStart);
+    }
+    // 返回包含查询条件开始到结束日期之前的所有日期元素，包含初始化数据
+    return $range;
+}

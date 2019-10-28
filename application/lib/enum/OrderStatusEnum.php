@@ -18,6 +18,6 @@ class OrderStatusEnum
     // 已支付，但库存不足
     const PAID_BUT_OUT_OF = 4;
 
-    // 已处理PAID_BUT_OUT_OF
-    const HANDLED_OUT_OF = 5;
+    // 已退款
+    const REFUNDED = 5;
 }

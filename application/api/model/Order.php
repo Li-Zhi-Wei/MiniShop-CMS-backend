@@ -41,4 +41,26 @@ class Order extends BaseModel
         return $result;
     }
 
+    /**
+     * 指定时间范围统计订单基础数据
+     */
+    public static function getOrderStatisticsByDate($params,$format)
+    {
+        $query = [];
+        // 查询时间范围
+        $query[] = self::betweenTimeQuery('start', 'end', $params);
+        // 查询status为2到4这个范围的记录
+        // 2（已支付）,3（已发货）,4（已支付但缺货）
+        $query[] = ['status', 'between', '2, 4'];
+
+        $order = self::where($query)
+            // 格式化create_time字段；做聚合查询
+            ->field("FROM_UNIXTIME(create_time,'{$format}') as date,
+                    count(*) as count,sum(total_price) as total_price")
+            // 查询结果按date字段分组，注意这里因为在field()中给create_time字段起了别名date，所以用date
+            ->group("date")
+            ->select();
+        return $order;
+    }
+
 }

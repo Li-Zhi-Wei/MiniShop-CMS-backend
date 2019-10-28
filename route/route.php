@@ -156,6 +156,16 @@ Route::group('', function () {
             // 分页查询所有订单
             Route::get(':orderNo', 'api/v1.Logistics/getLogistics');
         });
+        // 会员管理相关接口
+        Route::group('user', function () {
+            // 查询会员列表
+            Route::get('', 'api/v1.User/getUsersPaginate');
+        });
+        // 统计分析相关接口
+        Route::group('analysis', function () {
+            // 时间范围统计订单数据
+            Route::get('order/base', 'api/v1.Analysis/getOrderBaseStatistics');
+        });
 
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();
