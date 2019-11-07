@@ -34,4 +34,17 @@ class User extends BaseModel
         return $result;
     }
 
+    public static function getUserStatisticsByDate($params,$format)
+    {
+        $query = [];
+        $query[] = self::betweenTimeQuery('start', 'end', $params);
+
+        $user = self::where($query)
+            ->field("FROM_UNIXTIME(create_time,'{$format}') as date,
+        count(*) as count")
+            ->group("date")
+            ->select();
+        return $user;
+    }
+
 }

@@ -164,7 +164,9 @@ Route::group('', function () {
         // 统计分析相关接口
         Route::group('analysis', function () {
             // 时间范围统计订单数据
-            Route::get('order/base', 'api/v1.Analysis/getOrderBaseStatistics');
+            Route::get('order/base', 'api/v1.Statistics/getOrderBaseStatistics');
+            // 时间范围统计新增会员数
+            Route::get('user/base', 'api/v1.Statistics/getUserBaseStatistics');
         });
 
     });

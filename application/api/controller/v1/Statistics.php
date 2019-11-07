@@ -8,7 +8,7 @@ use think\facade\Request;
 use app\api\service\Statistics as StatisticsService;
 use app\lib\exception\analysis\AnalysisException;
 
-class Analysis
+class Statistics
 {
     /**
      * 指定时间范围统计订单基础数据
@@ -24,4 +24,18 @@ class Analysis
         if (empty($result)) throw new AnalysisException();
         return $result;
     }
+
+    /**
+     * 获取会员数据基础统计
+     * @param('start','开始时间','require|date')
+     * @param('end','结束时间','require|date')
+     * @return array
+     */
+    public function getUserBaseStatistics()
+    {
+        $params = Request::get();
+        $result = StatisticsService::getUserStatisticsByDate($params);
+        return $result;
+    }
+
 }
