@@ -172,3 +172,51 @@ function fill_date_range($queryStart, $queryEnd, $format, $stepType, $extend = '
     // 返回包含查询条件开始到结束日期之前的所有日期元素，包含初始化数据
     return $range;
 }
+
+/**
+ * 发送http请求
+ * @param $url
+ * @param int $httpCode
+ * @return bool|string
+ */
+function curl_get($url,&$httpCode = 0){
+    $ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+
+    //不做证书校验，部署在linux环境下请改为true
+    curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,10);
+    $file_contents = curl_exec($ch);
+    $httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $file_contents;
+}
+
+/**
+ * 发送http请求
+ * @param $url
+ * @param array $params
+ * @return bool|string
+ */
+function curl_post($url, array $params = array())
+{
+    $data_string = json_encode($params);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt(
+        $ch, CURLOPT_HTTPHEADER,
+        array(
+            'Content-Type: application/json'
+        )
+    );
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return ($data);
+}

@@ -25,6 +25,7 @@ class Order
     }
 
     /**
+     * 发货(发送微信模板消息)
      * @param string $company 快递公司编码
      * @param string $number 快递单号
      * @return bool
@@ -51,7 +52,9 @@ class Order
             $this->order->save();
             // 提交事务
             Db::commit();
-            return true;
+            $message = new DeliveryMessage();
+            $result = $message->sendDeliveryMessage($this->order,$number);
+            return $result;
         } catch (Exception $ex) {
             // 回滚事务
             Db::rollback();

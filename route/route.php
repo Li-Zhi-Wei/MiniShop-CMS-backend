@@ -168,7 +168,7 @@ Route::group('', function () {
             // 时间范围统计新增会员数
             Route::get('user/base', 'api/v1.Statistics/getUserBaseStatistics');
         });
-
+        Route::get('test','api/v1.test/test');
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();
 
