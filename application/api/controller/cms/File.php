@@ -8,19 +8,20 @@
 namespace app\api\controller\cms;
 
 use think\facade\Request;
-use think\Controller;
 use app\lib\file\LocalUploader;
 use app\lib\exception\file\FileException;
+use app\lib\file\ImageUploader;
 
 /**
  * Class File
  * @package app\api\controller\cms
  */
-class File extends Controller
+class File
 {
     /**
      * @return mixed
      * @throws FileException
+     * @throws \LinCmsTp\exception\FileException
      */
     public function postFile()
     {
@@ -33,5 +34,21 @@ class File extends Controller
         }
         $file = (new LocalUploader($request))->upload();
         return $file;
+    }
+
+    /**
+     * 自定义图片上传方法
+     */
+    public function postCustomImage()
+    {
+        try {
+            $request = Request::file();
+        } catch (\Exception $e) {
+            throw new FileException([
+                'msg' => '字段中含有非法字符',
+            ]);
+        }
+        $result = (new ImageUploader($request))->upload();
+        return $result;
     }
 }

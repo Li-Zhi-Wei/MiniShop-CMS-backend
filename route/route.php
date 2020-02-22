@@ -27,6 +27,10 @@ Route::group('', function () {
             Route::put('avatar','api/cms.User/setAvatar');
             // 查询自己信息
             Route::get('information','api/cms.User/getInformation');
+            // 用户更新信息
+            Route::put('','api/cms.User/update');
+            // 修改自己密码
+            Route::put('change_password','api/cms.User/changePassword');
         });
         // 管理类接口
         Route::group('admin', function () {
@@ -57,12 +61,15 @@ Route::group('', function () {
 
         });
         // 日志类接口
-        Route::get('log/', 'api/cms.Log/getLogs');
-        Route::get('log/users', 'api/cms.Log/getUsers');
-        Route::get('log/search', 'api/cms.Log/getUserLogs');
-
+        Route::group('log',function (){
+            Route::get('', 'api/cms.Log/getLogs');
+            Route::get('users', 'api/cms.Log/getUsers');
+            Route::get('search', 'api/cms.Log/getUserLogs');
+        });
         //上传文件类接口
-        Route::post('file/','api/cms.File/postFile');
+        Route::post('file','api/cms.File/postFile');
+        // 自定义图片上传接口
+        Route::post('file/image', 'api/cms.File/postCustomImage');
     });
     Route::group('v1', function () {
         // 轮播图
@@ -168,7 +175,7 @@ Route::group('', function () {
             // 时间范围统计新增会员数
             Route::get('user/base', 'api/v1.Statistics/getUserBaseStatistics');
         });
-        Route::get('test','api/v1.test/test');
+
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();
 

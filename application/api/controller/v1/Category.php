@@ -27,7 +27,7 @@ class Category
 
     /**
      * 新增商品分类
-     * @auth('添加商品分类','商品管理')
+     * @auth('新增商品分类','商品管理')
      * @validate('CategoryForm')
      */
     public function addCategory()

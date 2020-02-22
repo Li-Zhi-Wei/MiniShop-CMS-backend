@@ -69,7 +69,7 @@ class Product
 
     /**
      * 新增商品
-     * @auth('添加商品','商品管理')
+     * @auth('新增商品','商品管理')
      * @validate('ProductForm')
      */
     public function addProduct()
