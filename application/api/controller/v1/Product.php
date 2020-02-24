@@ -14,7 +14,7 @@ use think\facade\Request;
 class Product
 {
     /**
-     * 查询所有商品，分页
+     * 查询所有商品，分页,可模糊搜索product_name
      * @param('page','查询页码','require|number')
      * @param('count','单页查询数量','require|number|between:1,15')
      */

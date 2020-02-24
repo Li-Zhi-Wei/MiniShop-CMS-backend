@@ -27,6 +27,11 @@ class Product extends BaseModel
         return $this->hasMany('ProductProperty');// 一对多
     }
 
+    public function sku()
+    {
+        return $this->hasMany('Sku');
+    }
+
     public function getMainImgUrlAttr($value, $data)
     {
         return $this->prefixImgUrl($value, $data);
@@ -51,7 +56,7 @@ class Product extends BaseModel
         $totalNums = $productList->count();
         // 调用模型的limit方法对记录进行分页并获取查询结果
         $productList = $productList->limit($start, $count)
-            ->with('category,image.img,property')
+            ->with('category,image.img,property,sku.img')
             ->order('create_time desc')
             ->select();
         // 组装返回结果，这里与lin-cms风格保持一致
