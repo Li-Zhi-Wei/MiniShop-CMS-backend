@@ -8,6 +8,7 @@ use app\lib\exception\product\ProductException;
 use app\api\model\Product as ProductModel;
 use app\api\model\ProductImage as ProductImageModel;
 use app\api\model\ProductProperty as ProductPropertyModel;
+use app\api\model\Sku as SkuModel;
 use think\facade\Hook;
 use think\facade\Request;
 
@@ -84,6 +85,7 @@ class Product
         }
         $product->image()->saveAll($params['image']);
         $product->property()->saveAll($params['property']);
+        $product->sku()->saveAll($params['sku']);
         return writeJson(201, [], '商品新增成功');
     }
 
@@ -97,11 +99,11 @@ class Product
         $ids = Request::delete('ids');
         array_map(function ($id) {
             // get()方法第二个参数传入关联模型的方法名实现关联查询
-            $product = ProductModel::get($id, 'image,property');
+            $product = ProductModel::get($id, 'image,property,sku');
             // 如果product存在，做关联删除
             if ($product){
                 // 在delete()之前调用together()并传入关联模型方法名实现关联删除
-                $product->together('image,property')->delete();
+                $product->together('image,property,sku')->delete();
             }
         }, $ids);
         Hook::listen('logger', '删除了id为' . implode(',', $ids) . '的商品');
@@ -117,7 +119,7 @@ class Product
     {
         $params = Request::put();
         $params['main_img_url'] = explode(config('setting.img_prefix'), $params['main_img_url'])[1];
-        ProductModel::update($params);
+        ProductModel::update($params, [], true);
         return writeJson(201, '商品信息更新成功');
     }
 
@@ -195,6 +197,44 @@ class Product
     {
         $ids = Request::delete('ids');
         ProductPropertyModel::destroy($ids);
+        return writeJson(201, '商品属性删除成功');
+    }
+
+    /**
+     * 添加套餐
+     * @auth('编辑商品','商品管理')
+     * @validate('SkuForm')
+     */
+    public function addSku()
+    {
+        $params = Request::post('sku');
+        (new SkuModel())->saveAll($params);
+
+        return writeJson(201, '套餐新增成功');
+    }
+
+    /**
+     * 编辑商品套餐
+     * @auth('编辑商品','商品管理')
+     * @validate('SkuForm.edit')
+     */
+    public function updateSku()
+    {
+        $params = Request::put('sku');
+        (new SkuModel())->saveAll($params);
+
+        return writeJson(201, '套餐编辑成功');
+    }
+
+    /**
+     * 删除套餐
+     * @auth('编辑商品','商品管理')
+     * @param('ids','待删除的套餐id列表','require|array|min:1')
+     */
+    public function delSku()
+    {
+        $ids = Request::delete('ids');
+        SkuModel::destroy($ids);
         return writeJson(201, '商品属性删除成功');
     }
 }

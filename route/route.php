@@ -143,6 +143,12 @@ Route::group('', function () {
             Route::put('property','api/v1.Product/updateProductProperty');
             // 删除商品属性
             Route::delete('property','api/v1.Product/delProductProperty');
+            // 新增商品套餐
+            Route::post('sku','api/v1.Product/addSku');
+            // 编辑商品套餐
+            Route::put('sku','api/v1.Product/updateSku');
+            // 删除商品套餐
+            Route::delete('sku','api/v1.Product/delSku');
         });
         Route::group('order', function () {
             // 分页查询所有订单

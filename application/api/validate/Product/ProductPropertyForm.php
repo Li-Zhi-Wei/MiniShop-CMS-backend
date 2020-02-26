@@ -44,7 +44,6 @@ class ProductPropertyForm extends BaseValidate
             if (!isset($v['id']) || empty($v['id'])) {
                 return '商品属性主键id不能为空';
             }
-
             if (!isset($v['name']) || empty($v['name'])) {
                 return '商品属性名称不能为空';
             }
