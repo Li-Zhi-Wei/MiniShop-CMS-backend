@@ -29,7 +29,7 @@ class WxPay
         try {
             $payStatus = \WxPayApi::orderQuery($this->config, $inputObj);
             if ($payStatus['result_code'] === 'FAIL') {
-                throw new PayException(['msg' => $payStatus['err_code_des']]);
+                throw new PayException(['msg' => '微信支付：'.$payStatus['err_code_des']]);
             }
             if ($payStatus['trade_state'] === 'SUCCESS') {
                 $result = [
@@ -38,8 +38,8 @@ class WxPay
                     'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
                     'transaction_id' => $payStatus['transaction_id'], // 微信支付订单号
                     'is_subscribe' => $payStatus['is_subscribe'], // 是否关注公众账号
-                    'total_fee' => $payStatus['total_fee'], // 订单总金额，单位为分
-                    'cash_fee' => $payStatus['cash_fee'], // 现金支付金额
+                    'total_fee' => ((float)$payStatus['total_fee'])/100, // 订单总金额，单位为分
+                    'cash_fee' => ((float)$payStatus['cash_fee'])/100, // 现金支付金额
                     'time_end' => $payStatus['time_end'], // 支付完成时间
                     'attach' => $payStatus['attach'], // 附加数据
                 ];
@@ -48,7 +48,7 @@ class WxPay
                     'trade_state' => config('wx.trade_state')[$payStatus['trade_state']], // 交易状态
                     'trade_state_desc' => $payStatus['trade_state_desc'], // 交易状态描述
                     'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
-                    'total_fee' => $payStatus['total_fee'], // 订单总金额，单位为分
+                    'total_fee' => ((float)$payStatus['total_fee'])/100, // 订单总金额，单位为分
                 ];
             }
             return $result;
