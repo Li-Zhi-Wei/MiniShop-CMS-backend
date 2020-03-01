@@ -31,17 +31,26 @@ class WxPay
             if ($payStatus['result_code'] === 'FAIL') {
                 throw new PayException(['msg' => $payStatus['err_code_des']]);
             }
-            $result = [
-                'trade_state' => $payStatus['trade_state'],
-                'trade_state_desc' => $payStatus['trade_state_desc'],
-                'out_trade_no' => $payStatus['out_trade_no'],
-                'transaction_id' => $payStatus['transaction_id'],
-                'is_subscribe' => $payStatus['is_subscribe'],
-                'total_fee' => $payStatus['total_fee'],
-                'cash_fee' => $payStatus['cash_fee'],
-                'time_end' => $payStatus['time_end'],
-                'attach' => $payStatus['attach'],
-            ];
+            if ($payStatus['trade_state'] === 'SUCCESS') {
+                $result = [
+                    'trade_state' => '支付成功', // 交易状态
+                    'trade_state_desc' => $payStatus['trade_state_desc'], // 交易状态描述
+                    'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
+                    'transaction_id' => $payStatus['transaction_id'], // 微信支付订单号
+                    'is_subscribe' => $payStatus['is_subscribe'], // 是否关注公众账号
+                    'total_fee' => $payStatus['total_fee'], // 订单总金额，单位为分
+                    'cash_fee' => $payStatus['cash_fee'], // 现金支付金额
+                    'time_end' => $payStatus['time_end'], // 支付完成时间
+                    'attach' => $payStatus['attach'], // 附加数据
+                ];
+            } else {
+                $result = [
+                    'trade_state' => config('wx.trade_state')[$payStatus['trade_state']], // 交易状态
+                    'trade_state_desc' => $payStatus['trade_state_desc'], // 交易状态描述
+                    'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
+                    'total_fee' => $payStatus['total_fee'], // 订单总金额，单位为分
+                ];
+            }
             return $result;
         } catch (\WxPayException $ex) {
             throw new PayException(['msg' => $ex->getMessage()]);
