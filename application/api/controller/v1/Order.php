@@ -4,7 +4,6 @@
 namespace app\api\controller\v1;
 
 
-use app\api\service\WxPay;
 use think\facade\Hook;
 use think\facade\Request;
 use app\api\model\Order as OrderModel;
@@ -50,7 +49,7 @@ class Order
 
     /**
      * 查询订单支付状态
-     * @auth('订单支付状态','订单管理')
+     * @auth('查询订单','订单管理')
      * @param $orderNo
      */
     public function getOrderPayStatus($orderNo)
@@ -61,32 +60,32 @@ class Order
 
     /**
      * 订单退款
-     * @auth('订单退款','财务管理')
+     * @auth('订单退款','订单管理')
      * @params('order_no','订单号','require')
      * @params('refund_fee','退款金额','require|float|>:0')
      */
     public function refund()
     {
         $params = Request::post();
-        $result = (new WxPay($params['order_no']))->refund($params['refund_fee']);
+        $result = (new WxPayService($params['order_no']))->refund($params['refund_fee']);
         Hook::listen('logger', "操作订单{$params['order_no']}退款,退款金额{$params['refund_fee']}");
         return $result;
     }
 
     /**
-     * 订单退款查询
-     * @auth('查询退款详情','财务管理')
+     * 查询订单退款详情
+     * @auth('查询订单','订单管理')
      * @param $orderNo
-     * @return \成功时返回，其他抛异常
      */
     public function refundQuery($orderNo)
     {
-        $result = (new WxPay($orderNo))->refundQuery();
+        $result = (new WxPayService($orderNo))->refundQuery();
         return $result;
     }
 
     /**
      * 分页查询订单发货记录
+     * @auth('查询发货记录','日志')
      * @validate('DeliverRecordForm')
      */
     public function getOrderDeliverRecord()

@@ -28,6 +28,9 @@ class WxPay
         // 调用微信支付订单查询接口
         try {
             $payStatus = \WxPayApi::orderQuery($this->config, $inputObj);
+            if ($payStatus['return_code'] === 'FAIL') {
+                throw new PayException(['msg' => '微信支付：'.$payStatus['return_msg']]);
+            }
             if ($payStatus['result_code'] === 'FAIL') {
                 throw new PayException(['msg' => '微信支付：'.$payStatus['err_code_des']]);
             }
@@ -38,8 +41,8 @@ class WxPay
                     'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
                     'transaction_id' => $payStatus['transaction_id'], // 微信支付订单号
                     'is_subscribe' => $payStatus['is_subscribe'], // 是否关注公众账号
-                    'total_fee' => ((float)$payStatus['total_fee'])/100, // 订单总金额，单位为分
-                    'cash_fee' => ((float)$payStatus['cash_fee'])/100, // 现金支付金额
+                    'total_fee' => $payStatus['total_fee']/100, // 订单总金额，单位为分
+                    'cash_fee' => $payStatus['cash_fee']/100, // 现金支付金额
                     'time_end' => $payStatus['time_end'], // 支付完成时间
                     'attach' => $payStatus['attach'], // 附加数据
                 ];
@@ -48,7 +51,7 @@ class WxPay
                     'trade_state' => config('wx.trade_state')[$payStatus['trade_state']], // 交易状态
                     'trade_state_desc' => $payStatus['trade_state_desc'], // 交易状态描述
                     'out_trade_no' => $payStatus['out_trade_no'], // 商户订单号
-                    'total_fee' => ((float)$payStatus['total_fee'])/100, // 订单总金额，单位为分
+                    'total_fee' => $payStatus['total_fee']/100, // 订单总金额，单位为分
                 ];
             }
             return $result;
@@ -77,6 +80,9 @@ class WxPay
         try {
             // 数据库中查询订单，因为只需要知道订单的订单总金额字段，在查询时指定了要列出的字段，节省性能
             $order = OrderModel::field('total_price')->where('order_no', $this->orderNo)->find();
+            if (!$order) {
+                throw new PayException(['msg' => '要退款的订单不存在']);
+            }
             // total_price通过查询数据库订单记录获得，refundFee由外部或者前端传递
             $inputObject = $this->generateRefundObject($order->total_price, $refundFee);
             $refundRes = \WxPayApi::refund($this->config, $inputObject);
@@ -147,19 +153,37 @@ class WxPay
     {
         try {
             $inputObject = $this->generateRefundQueryObject();
-            $result = \WxPayApi::refundQuery($this->config, $inputObject);
+            $refundStatus = \WxPayApi::refundQuery($this->config, $inputObject);
 
-            if ($result['return_code'] === 'FAIL') {
-                throw new PayException(['msg' => $result['return_msg']]);
+            if ($refundStatus['return_code'] === 'FAIL') {
+                throw new PayException(['msg' => $refundStatus['return_msg']]);
             }
-
-            if ($result['result_code'] === 'FAIL') {
-                throw new PayException(['msg' => $result['err_code_des']]);
+            if ($refundStatus['result_code'] === 'SUCCESS') {
+                $result = [
+                    'result_code' => '退款成功',
+                    'total_fee' => $refundStatus['total_fee']/100, // 订单金额
+                    'cash_fee' => $refundStatus['cash_fee']/100, // 用户支付金额
+                    'refund_count' => $refundStatus['refund_count'], // 退款笔数
+                    'refund_fee' => $refundStatus['refund_fee']/100, // 退款总金额
+                ];
+                for ($i = 0; $i < $refundStatus['refund_count']; $i++) {
+                    $result['refund_fee_detail'][$i] =
+                        [
+                            'refund_fee' => $refundStatus['refund_fee_'.$i]/100,
+                            'refund_success_time' => $refundStatus['refund_success_time_'.$i]
+                        ];
+                }
+            } else {
+                $result = [
+                    'result_code' => '退款失败',
+                    'err_code' => $refundStatus['err_code'],
+                    'err_code_des' => $refundStatus['err_code_des'],
+                ];
             }
+            return $result;
         } catch (\WxPayException $ex) {
             throw new PayException(['msg' => $ex->getMessage()]);
         }
-        return $result;
     }
 
     /**
