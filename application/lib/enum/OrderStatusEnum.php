@@ -20,4 +20,10 @@ class OrderStatusEnum
 
     // 已退款
     const REFUNDED = 5;
+
+    // 已收货
+    const RECEIVED = 6;
+
+    // 已关闭
+    const CLOSED = 7;
 }

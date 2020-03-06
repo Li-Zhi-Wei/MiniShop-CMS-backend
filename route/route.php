@@ -163,6 +163,10 @@ Route::group('', function () {
             Route::get('pay/refund/:orderNo','api/v1.Order/refundQuery');
             // 查询发货记录
             Route::get('shipment/record', 'api/v1.Order/getOrderDeliverRecord');
+            // 关闭订单
+            Route::put('close/:id', 'api/v1.Order/close');
+            // 修改状态为已支付
+            Route::put('paid/:id', 'api/v1.Order/changeToPaid');
         });
         // 物流管理相关接口
         Route::group('logistics', function () {

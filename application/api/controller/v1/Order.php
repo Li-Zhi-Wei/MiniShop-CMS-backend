@@ -11,6 +11,7 @@ use app\lib\exception\order\OrderException;
 use app\api\service\Order as OrderService;
 use app\api\service\WxPay as WxPayService;
 use app\api\model\DeliverRecord as DeliverRecordModel;
+use app\lib\enum\OrderStatusEnum;
 
 class Order
 {
@@ -100,6 +101,26 @@ class Order
             ]);
         }
         return $result;
+    }
+
+    /**
+     * @auth('关闭订单','订单管理')
+     * @param('id','订单id','require|number')
+     */
+    public function close($id)
+    {
+        OrderModel::update(['id' => $id, 'status' => OrderStatusEnum::CLOSED]);
+        return writeJson(201, '订单关闭成功');
+    }
+
+    /**
+     * @auth('修改状态为已支付','订单管理')
+     * @param('id','订单id','require|number')
+     */
+    public function changeToPaid($id)
+    {
+        OrderModel::update(['id' => $id, 'status' => OrderStatusEnum::PAID]);
+        return writeJson(201, '修改订单状态为已支付成功');
     }
 
 }
