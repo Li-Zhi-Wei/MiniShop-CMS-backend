@@ -14,6 +14,6 @@ class OrderForm extends BaseValidate
         'start|开始时间' => 'require|date',
         'end|结束时间' => 'require|date',
         'name|收货人姓名' => 'chs',
-        'order_no|商品订单号' => 'alphaNum|length:16'
+        'order_no|商品订单号' => 'alphaNum'
     ];
 }

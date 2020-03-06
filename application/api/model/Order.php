@@ -21,7 +21,7 @@ class Order extends BaseModel
     public static function getOrdersPaginate($params)
     {
         $field = ['order_no', ['name', 'snap_address->name']];
-        $query = self::equalQuery($field, $params);
+        $query = self::likeQuery($field, $params);
         $query[] = self::betweenTimeQuery('start','end', $params);
         // paginate()方法用于根据url中的参数，计算查询要查询的开始位置和查询数量
         list($start, $count) = paginate();

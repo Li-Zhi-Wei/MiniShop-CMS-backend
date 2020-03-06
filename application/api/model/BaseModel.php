@@ -49,6 +49,35 @@ class BaseModel extends Model
     }
 
     /**
+     * 构造条件为相似的数组查询条件
+     * @param $field 要检索的参数名数组
+     * @param $params 前端提交过来的所有GET参数数组
+     * @return array 构造好后的查询条件
+     */
+    protected static function likeQuery($field, $params)
+    {
+        $query = [];
+        foreach ($field as $value) {
+            if (is_array($value)) {
+                if (array_key_exists($value[0], $params)) {
+                    $i = json_encode($params[$value[0]]);
+                    $i = str_replace('"','',$i);
+                    $i = str_replace("\\",'_',$i);
+                    $query[] = [$value[1], 'like', '%'.$i.'%'];
+                }
+            } else {
+                if (array_key_exists($value, $params)) {
+                    $i = json_encode($params[$value]);
+                    $i = str_replace('"','',$i);
+                    $i = str_replace("\\",'_',$i);
+                    $query[] = [$value, 'like', '%'.$i.'%'];
+                }
+            }
+        }
+        return $query;
+    }
+
+    /**
      * @param $startField 开始时间的参数名
      * @param $endField 结束时间的参数名
      * @param $params  前端提交过来的所有GET参数数组

@@ -52,13 +52,19 @@ class Order
             $this->order->save();
             // 提交事务
             Db::commit();
-            $message = new DeliveryMessage();
-            $result = $message->sendDeliveryMessage($this->order,$number);
-            return $result;
         } catch (Exception $ex) {
             // 回滚事务
             Db::rollback();
             throw new OrderException(['msg' => '订单发货不成功', 'error_code' => '70009']);
+        }
+        try {
+//            $message = new DeliveryMessage();
+//            $result = $message->sendDeliveryMessage($this->order,$number);
+//            return $result;
+            // TODO
+            return true;
+        } catch (Exception $ex) {
+            throw new OrderException(['msg' => '模板消息发送不成功', 'error_code' => '70010']);
         }
     }
 

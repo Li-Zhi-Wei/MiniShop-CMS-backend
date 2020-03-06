@@ -57,6 +57,9 @@ class SkuForm extends BaseValidate
             if (isset($v['sale']) || !empty($v['sale'])) {
                 return '商品套餐' . $v['name'] . '不能设置销量';
             }
+            if (isset($v['product_id']) || !empty($v['product_id'])) {
+                return '商品套餐' . $v['name'] . '不能改变所属商品';
+            }
         }
         return true;
     }

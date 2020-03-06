@@ -50,6 +50,9 @@ class ProductPropertyForm extends BaseValidate
             if (!isset($v['detail']) || empty($v['detail'])) {
                 return '商品属性' . $v['name'] . '的详情不能为空';
             }
+            if (isset($v['product_id']) || !empty($v['product_id'])) {
+                return '商品属性' . $v['name'] . '不能改变所属商品';
+            }
         }
         return true;
     }
