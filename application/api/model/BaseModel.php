@@ -60,17 +60,11 @@ class BaseModel extends Model
         foreach ($field as $value) {
             if (is_array($value)) {
                 if (array_key_exists($value[0], $params)) {
-                    $i = json_encode($params[$value[0]]);
-                    $i = str_replace('"','',$i);
-                    $i = str_replace("\\",'_',$i);
-                    $query[] = [$value[1], 'like', '%'.$i.'%'];
+                    $query[] = [$value[1], 'like', '%'.$params[$value[0]].'%'];
                 }
             } else {
                 if (array_key_exists($value, $params)) {
-                    $i = json_encode($params[$value]);
-                    $i = str_replace('"','',$i);
-                    $i = str_replace("\\",'_',$i);
-                    $query[] = [$value, 'like', '%'.$i.'%'];
+                    $query[] = [$value, 'like', '%'.$params[$value].'%'];
                 }
             }
         }

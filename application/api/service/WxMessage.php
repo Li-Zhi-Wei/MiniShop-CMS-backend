@@ -8,13 +8,11 @@ use app\lib\exception\wx\WxMessageException;
 
 class WxMessage
 {
-    private $sendUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s";
-
-    protected $tplID;
-    protected $page;
-    protected $formID;
-    protected $data;
-    protected $emphasisKeyWord;
+    private $sendUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s";
+    private $touser; // 用户openid
+    protected $tplID; // 订阅消息模板ID
+    protected $page; // 点击模板卡片后的跳转页面
+    protected $data; // 模板内容
 
     function __construct()
     {
@@ -30,16 +28,14 @@ class WxMessage
             'touser' => $openID,
             'template_id' => $this->tplID,
             'page' => $this->page,
-            'form_id' => $this->formID,
             'data' => $this->data,
-            'emphasis_keyword' => $this->emphasisKeyWord
         ];
         $result = curl_post($this->sendUrl, $data);
         $result = json_decode($result, true);
         if ($result['errcode'] == 0) {
-            return true;
+            return '发货通知发送成功';
         } else {
-            throw new WxMessageException();
+            return '发货通知发送失败';
         }
     }
 
