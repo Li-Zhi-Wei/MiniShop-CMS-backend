@@ -12,6 +12,7 @@ class Statistics
 {
     /**
      * 指定时间范围统计订单基础数据
+     * @auth('订单数据','统计数据')
      * @param('start','开始时间','require|date')
      * @param('end','结束时间','require|date')
      * @param('type','日期间距类型','require')
@@ -27,6 +28,7 @@ class Statistics
 
     /**
      * 获取会员数据基础统计
+     * @auth('会员数据','统计数据')
      * @param('start','开始时间','require|date')
      * @param('end','结束时间','require|date')
      * @return array

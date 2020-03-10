@@ -19,7 +19,7 @@ class ImageUploader extends File
         $host = Config::get('setting.img_prefix');
         foreach ($this->files as $key => $file) {
 
-            $info = $file->move(Env::get('root_path') . '/' . 'public' . '/' . $this->storeDir);
+            $info = $file->move(Env::get('root_path') . '/'. '../server' . '/public' . '/' . $this->storeDir);
             if ($info) {
                 $path = str_replace('\\', '/', $info->getSaveName());
             } else {

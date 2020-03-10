@@ -10,7 +10,6 @@ class ThemeForm extends BaseValidate
 {
     protected $rule = [
         'name' => 'require|chsDash',
-        'description' => 'require|chsDash',
         'topic_img_id' => 'require|number',
         'head_img_id' => 'require|number'
     ];

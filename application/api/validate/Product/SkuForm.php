@@ -40,6 +40,9 @@ class SkuForm extends BaseValidate
                 if (!isset($v['status']) || empty($v['status'])) {
                     return '商品套餐' . $v['name'] . '的状态不能为空';
                 }
+                if (!isset($v['img_id']) || empty($v['img_id'])) {
+                    return '商品套餐' . $v['name'] . '的图片不能为空';
+                }
                 if (isset($v['sale']) || !empty($v['sale'])) {
                     return '商品套餐' . $v['name'] . '不能设置销量';
                 }
