@@ -65,19 +65,19 @@ class ProductForm extends BaseValidate
                 if (!isset($v['price']) || empty($v['price'])) {
                     return '商品套餐' . $v['name'] . '的价格不能为空';
                 }
-                if (!isset($v['stock']) || empty($v['stock'])) {
+                if (!isset($v['stock'])) {
                     return '商品套餐' . $v['name'] . '的库存不能为空';
                 }
-                if (!isset($v['postage']) || empty($v['postage'])) {
+                if (!isset($v['postage'])) {
                     return '商品套餐' . $v['name'] . '的运费不能为空';
                 }
-                if (!isset($v['status']) || empty($v['status'])) {
+                if (!isset($v['status'])) {
                     return '商品套餐' . $v['name'] . '的状态不能为空';
                 }
                 if (!isset($v['img_id']) || empty($v['img_id'])) {
                     return '商品套餐' . $v['name'] . '的图片不能为空';
                 }
-                if (isset($v['sale']) || !empty($v['sale'])) {
+                if (isset($v['sale'])) {
                     return '商品套餐' . $v['name'] . '不能设置销量';
                 }
             }

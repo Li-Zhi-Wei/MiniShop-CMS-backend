@@ -15,28 +15,44 @@ class ImageUploader extends File
     public function upload()
     {
         $ret = [];
-        $this->storeDir = 'images';
         $host = Config::get('setting.img_prefix');
+        $storageDir = config('setting.upload_img_dir');
         foreach ($this->files as $key => $file) {
-
-            $info = $file->move(Env::get('root_path') . '/'. '../server' . '/public' . '/' . $this->storeDir);
-            if ($info) {
-                $path = str_replace('\\', '/', $info->getSaveName());
+            $md5 = $this->generateMd5($file);
+            $exists = Image::get(['md5' => $md5]);
+            if ($exists) {
+                array_push($ret, [
+                    'id' => $exists['id'],
+                    'url' => $exists['url']
+                ]);
             } else {
-                throw new FileException([
-                    'msg' => $this->getError,
-                    'error_code' => 60001
+                $size = $this->getSize($file);
+                $info = $file->move($storageDir);
+                if ($info) {
+                    $extension = '.' . $info->getExtension();
+                    $name = $info->getFilename();
+                    $path = str_replace('\\', '/', $info->getSaveName());
+                } else {
+                    throw new FileException([
+                        'msg' => $this->getError,
+                        'error_code' => 60001
+                    ]);
+                }
+
+                $image = Image::create([
+                    'url' => '/' . $path,
+                    'from' => 1,
+                    'name' => $name,
+                    'extension' => $extension,
+                    'size' => $size,
+                    'md5' => $md5,
+                ]);
+                array_push($ret, [
+                    'id' => $image->id,
+                    'url' => $host. '/' . $path
                 ]);
             }
 
-            $image = Image::create([
-                'url' => '/' . $path,
-                'from' => 1,
-            ]);
-            array_push($ret, [
-                'id' => $image->id,
-                'url' => $host . '/' . $path
-            ]);
         }
         return $ret;
     }
