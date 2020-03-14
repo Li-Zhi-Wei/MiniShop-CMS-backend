@@ -51,7 +51,7 @@ class Order extends BaseModel
         $query[] = self::betweenTimeQuery('start', 'end', $params);
         // 查询status为2到4这个范围的记录
         // 2（已支付）,3（已发货）,4（已支付但缺货）
-        $query[] = ['status', 'between', '2, 4'];
+        $query[] = ['status', 'in', '2, 3, 4, 6'];
 
         $order = self::where($query)
             // 格式化create_time字段；做聚合查询

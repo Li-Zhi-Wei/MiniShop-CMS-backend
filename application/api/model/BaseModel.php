@@ -9,7 +9,7 @@ use think\Model;
 class BaseModel extends Model
 {
     //自动写入时间戳
-    protected $autoWriteTimestamp = true;
+    protected $autoWriteTimestamp = 'datetime';
 
     /**
      * 自定义获取器，将图片url补全

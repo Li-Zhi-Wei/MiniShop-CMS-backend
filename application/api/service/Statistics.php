@@ -44,20 +44,20 @@ class Statistics
                 'mysql' => '%Y'
             ],
             'month' => [
-                'php' => 'm',
-                'mysql' => '%m'
+                'php' => 'Y-m',
+                'mysql' => '%Y-%m'
             ],
             'day' => [
-                'php' => 'd',
-                'mysql' => '%d'
+                'php' => 'm-d',
+                'mysql' => '%m-%d'
             ],
             'hour' => [
-                'php' => 'H',
-                'mysql' => '%H'
+                'php' => 'd-H',
+                'mysql' => '%d-%H'
             ],
             'minute' => [
-                'php' => 'i',
-                'mysql' => '%i'
+                'php' => 'H-i',
+                'mysql' => '%H-%i'
             ],
         ];
         return $map[$type];
