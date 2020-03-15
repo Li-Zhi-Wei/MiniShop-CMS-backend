@@ -8,7 +8,6 @@ namespace app\api\model;
 class DeliverRecord extends BaseModel
 {
     protected $hidden = ['update_time'];
-    protected $autoWriteTimestamp = true;
 
     public static function getDeliverRecordPaginate($params)
     {
@@ -27,6 +26,9 @@ class DeliverRecord extends BaseModel
             ->order('create_time desc')
             ->select();
         // 组装返回结果
+        foreach ($orderList as $item) {
+            $item->comp = config('logistics.comp')[$item->comp];
+        }
         $result = [
             'collection' => $orderList,
             'total_nums' => $totalNums

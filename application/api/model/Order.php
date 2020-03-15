@@ -50,12 +50,12 @@ class Order extends BaseModel
         // 查询时间范围
         $query[] = self::betweenTimeQuery('start', 'end', $params);
         // 查询status为2到4这个范围的记录
-        // 2（已支付）,3（已发货）,4（已支付但缺货）
+        // 2（已支付）,3（已发货）,4（已支付但缺货）,6（已收货）
         $query[] = ['status', 'in', '2, 3, 4, 6'];
 
         $order = self::where($query)
-            // 格式化create_time字段；做聚合查询
-            ->field("FROM_UNIXTIME(create_time,'{$format}') as date,
+            // 格式化create_time字段；做聚合查询date_format
+            ->field("date_format(create_time,'{$format}') as date,
                     count(*) as count,sum(total_price) as total_price")
             // 查询结果按date字段分组，注意这里因为在field()中给create_time字段起了别名date，所以用date
             ->group("date")

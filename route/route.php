@@ -185,6 +185,18 @@ Route::group('', function () {
             // 时间范围统计新增会员数
             Route::get('user/base', 'api/v1.Statistics/getUserBaseStatistics');
         });
+        Route::group('config', function (){
+            // 查询设置
+            Route::get('', 'api/v1.Config/getConfig');
+            // 设置全场包邮条件
+            Route::put('postage', 'api/v1.Config/setPostage');
+            // 设置全场包邮状态开关
+            Route::put('postageFlag', 'api/v1.Config/modifyPostageFlag');
+            // 设置店铺开关状态
+            Route::put('shopStatus', 'api/v1.Config/modifyShopStatus');
+            // 设置cms首页提示对话框的显示开关
+            Route::put('showDialog', 'api/v1.Config/modifyAboutDialog');
+        });
 
     });
 })->middleware(['Auth','ReflexValidate'])->allowCrossDomain();

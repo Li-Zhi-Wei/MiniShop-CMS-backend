@@ -40,7 +40,7 @@ class User extends BaseModel
         $query[] = self::betweenTimeQuery('start', 'end', $params);
 
         $user = self::where($query)
-            ->field("FROM_UNIXTIME(create_time,'{$format}') as date,
+            ->field("date_format(create_time,'{$format}') as date,
         count(*) as count")
             ->group("date")
             ->select();

@@ -83,7 +83,7 @@ class BaseModel extends Model
         $query = [];
         if (array_key_exists($startField, $params) && array_key_exists($endField, $params)) {
             if (!empty($params[$startField]) && !empty($params[$endField])) {
-                $query = array($dbField, 'between time', array($params[$startField], $params[$endField]));
+                $query = array($dbField, 'between time', array($params[$startField], $params[$endField].' 23:59:59'));
             }
         }
         return $query;
