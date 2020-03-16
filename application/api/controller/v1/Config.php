@@ -63,7 +63,7 @@ class Config
      */
     public function modifyAboutDialog() {
         $config = ConfigModel::get(3);
-        $config->detail = !$config->detail;
+        $config->detail = 0;
         $config->save();
         return writeJson(201, [], '首页说明对话框展示状态已经修改');
     }

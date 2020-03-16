@@ -4,7 +4,6 @@
 namespace app\api\service;
 
 
-use app\lib\exception\wx\WxMessageException;
 
 class WxMessage
 {

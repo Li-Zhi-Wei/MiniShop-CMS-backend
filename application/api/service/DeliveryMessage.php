@@ -3,7 +3,6 @@
 
 namespace app\api\service;
 
-use app\api\model\DeliverRecord;
 use app\api\model\User;
 use app\lib\exception\order\OrderException;
 use app\lib\exception\user\UserException;
