@@ -56,6 +56,6 @@ composer install
 
 进入工程根目录下``/config/api/``，根据自己的实际情况填写各项配置
 
-#特别说明
+# 特别说明
 
 本项目学习自沁尘大佬的[Lin-CMS-TP5](https://github.com/ChenJinchuang/lin-cms-tp5)，并结合项目需求增加了一些功能（如增加了邮费模块、商品套餐模块等），在学习过程中也有幸贡献了几个PR。感谢沁尘大佬的支持。
