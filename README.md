@@ -14,8 +14,9 @@
 
 配套项目请访问
 
-* [商城后台VUE前端项目](https://github.com/Li-Zhi-Wei/MiniShop-CMS-VUE)
-* [商城小程序后端](https://github.com/Li-Zhi-Wei/MiniShop-backend)
+* [商城管理后台VUE前端](https://github.com/Li-Zhi-Wei/MiniShop-CMS-VUE)
+* [微信小程序商城](https://github.com/Li-Zhi-Wei/MiniShop-WeApp)
+* [商城后端](https://github.com/Li-Zhi-Wei/MiniShop-backend)
 
 ## 线上 Demo
 
@@ -26,6 +27,8 @@
 * 安装MySQL（version： 5.6+）
 
 * 安装PHP环境(version： 7.1+)
+
+* 安装WEB服务器（Apache / Nginx）
 
 * 下载工程项目
 
