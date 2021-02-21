@@ -9,7 +9,7 @@ use think\model\concern\SoftDelete;
 class Image extends BaseModel
 {
     use SoftDelete;
-    protected $hidden = ['delete_time','from','update_time'];
+    protected $hidden = ['delete_time','from','update_time','md5'];
     public function getUrlAttr($value,$data){
         return $this->prefixImgUrl($value,$data);
     }

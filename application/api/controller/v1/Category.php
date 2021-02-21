@@ -15,12 +15,15 @@ class Category
      */
     public function getCategory()
     {
-        $result = CategoryModel::with('img')->select();
+        $result = CategoryModel::with('img')->where('pid',0)->select();
         if ($result->isEmpty()) {
             throw new CategoryException([
                 'code'=>404,
                 'msg' => '没有查询到商品分类',
                 'error_code' => 70003]);
+        }
+        foreach ($result as $item) {
+            $item['children'] = CategoryModel::with('img')->where('pid',$item['id'])->select();
         }
         return $result;
     }
