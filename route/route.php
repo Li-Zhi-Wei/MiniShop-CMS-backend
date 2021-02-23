@@ -149,6 +149,8 @@ Route::group('', function () {
             Route::put('sku','api/v1.Product/updateSku');
             // 删除商品套餐
             Route::delete('sku','api/v1.Product/delSku');
+            // 编辑商品库存
+            Route::put('skuStock','api/v1.Product/updateSkuStock');
         });
         Route::group('order', function () {
             // 分页查询所有订单
