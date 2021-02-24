@@ -216,6 +216,7 @@ class Product
     /**
      * 编辑商品套餐
      * @auth('编辑商品','商品管理')
+     * @auth('编辑库存','商品管理')
      * @validate('SkuForm.edit')
      */
     public function updateSku()
@@ -236,17 +237,5 @@ class Product
         $ids = Request::delete('ids');
         SkuModel::destroy($ids);
         return writeJson(201, '商品属性删除成功');
-    }
-
-    /**
-     * 编辑商品套餐
-     * @auth('编辑库存','商品管理')
-     * @validate('SkuForm.editStock')
-     */
-    public function updateSkuStock()
-    {
-        $params = Request::put('sku');
-        (new SkuModel())->saveAll($params);
-        return writeJson(201, '套餐库存成功');
     }
 }

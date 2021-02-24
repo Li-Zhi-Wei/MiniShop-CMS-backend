@@ -23,6 +23,9 @@ class Order extends BaseModel
         $field = ['order_no', ['name', 'snap_address->name']];
         $query = self::likeQuery($field, $params);
         $query[] = self::betweenTimeQuery('start','end', $params);
+        if(array_key_exists('status',$params)){
+            $query[] = ['status','=',$params['status']];
+        }
         // paginate()方法用于根据url中的参数，计算查询要查询的开始位置和查询数量
         list($start, $count) = paginate();
         // 应用条件查询

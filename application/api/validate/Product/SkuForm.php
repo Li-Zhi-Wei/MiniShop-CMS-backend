@@ -18,12 +18,6 @@ class SkuForm extends BaseValidate
             ->append('sku', 'requireId');
     }
 
-    public function sceneEditStock()
-    {
-        return $this->remove('sku','sku')
-            ->append('sku','requireStock');
-    }
-
     protected function sku($value)
     {
         if (!empty($value)) {
@@ -73,16 +67,4 @@ class SkuForm extends BaseValidate
         return true;
     }
 
-    protected function requireStock($value)
-    {
-        foreach ($value as $v) {
-            if (!isset($v['id']) || empty($v['id'])) {
-                return '商品套餐主键id不能为空';
-            }
-            if (!isset($v['stock'])) {
-                return '商品套餐' . $v['name'] . '的库存不能为空';
-            }
-        }
-        return true;
-    }
 }
